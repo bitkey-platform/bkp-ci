@@ -1,5 +1,17 @@
 FROM circleci/golang:1.11
 
+ARG VCS_REF
+ARG BUILD_DATE
+LABEL maintainer="Bitkey Inc." \
+      org.label-schema.url="https://bitkey.co.jp" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/bitkey-platform/bkp-ci"\
+      org.label-schema.vcs-ref=$VCS_REF
+
+ENV PROTOBUF_GIT_TAG="v1.2.0" \
+    PROTOC_VERSION="3.2.0" \
+    GOLANGCI_LINT_VERSION="1.12.5"
+
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
     && go get github.com/stormcat24/protodep \
@@ -8,24 +20,19 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
     && go get github.com/rubenv/sql-migrate/... \
     && go get github.com/golang/mock/gomock \
-    && go install github.com/golang/mock/mockgen
-
-RUN GIT_TAG="v1.2.0" \
+    && go install github.com/golang/mock/mockgen \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
     && git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $GIT_TAG \
-    && go install github.com/golang/protobuf/protoc-gen-go
-
-RUN sudo apt-get update
-RUN curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip \
-    && unzip protoc-3.2.0-linux-x86_64.zip -d protoc3\
-    && sudo mv protoc3/bin/* /usr/local/bin/\
-    && sudo mv protoc3/include/* /usr/local/include/\
+    && go install github.com/golang/protobuf/protoc-gen-go\
+    && sudo apt-get update \
+    && curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip \
+    && unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /tmp/protoc\
+    && sudo mv /tmp/protoc/bin/* /usr/local/bin/\
+    && sudo mv /tmp/protoc/include/* /usr/local/include/\
     && sudo chown circleci /usr/local/bin/protoc\
-    && sudo chown -R circleci /usr/local/include/google
+    && sudo chown -R circleci /usr/local/include/google\
+    && sudo apt-get -y install mysql-client\
+    && rm -fr /tmp/* \
+    && sudo curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
 
-RUN sudo apt-get -y install mysql-client \
-    && sudo apt-get install ruby-full \
-    && sudo gem install bundler \
-    && sudo gem install danger -v "5.11.0"
-
-RUN sudo curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.12.5
+CMD ["/bin/sh"]
