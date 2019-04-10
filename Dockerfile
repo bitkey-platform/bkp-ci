@@ -31,7 +31,7 @@ RUN go get github.com/golang/dep/cmd/dep \
     && sudo mv /tmp/protoc/include/* /usr/local/include/\
     && sudo chown circleci /usr/local/bin/protoc\
     && sudo chown -R circleci /usr/local/include/google\
-    && sudo apt-get -y install mysql-client\
+    && sudo apt-get -y install postgresql-client\
     && rm -fr /tmp/* \
     && sudo curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
 
