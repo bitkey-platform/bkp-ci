@@ -1,4 +1,4 @@
-FROM circleci/golang:1.11
+FROM circleci/golang:1.12
 
 ARG VCS_REF
 ARG BUILD_DATE
