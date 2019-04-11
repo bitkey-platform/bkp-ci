@@ -22,7 +22,7 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/golang/mock/gomock \
     && go install github.com/golang/mock/mockgen \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
-    && git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $GIT_TAG \
+    && git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $PROTOBUF_GIT_TAG \
     && go install github.com/golang/protobuf/protoc-gen-go\
     && sudo apt-get update \
     && curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip \
