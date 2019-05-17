@@ -1,4 +1,4 @@
-FROM circleci/golang:1.12
+FROM circleci/golang:1.12.4
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -18,7 +18,7 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/grpc-ecosystem/go-grpc-middleware/validator \
     && go get github.com/mwitkow/go-proto-validators \
     && go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
-    && go get github.com/rubenv/sql-migrate/... \
+    && go get -u golang.org/x/tools/go/packages \
     && go get github.com/golang/mock/gomock \
     && go install github.com/golang/mock/mockgen \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
