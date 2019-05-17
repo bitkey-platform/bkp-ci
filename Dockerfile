@@ -1,4 +1,4 @@
-FROM circleci/golang:1.12
+FROM circleci/golang:1.12.4
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -10,7 +10,7 @@ LABEL maintainer="Bitkey Inc." \
 
 ENV PROTOBUF_GIT_TAG="v1.2.0" \
     PROTOC_VERSION="3.2.0" \
-    GOLANGCI_LINT_VERSION="1.12.5"
+    GOLANGCI_LINT_VERSION="1.16.0"
 
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
@@ -18,7 +18,7 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/grpc-ecosystem/go-grpc-middleware/validator \
     && go get github.com/mwitkow/go-proto-validators \
     && go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
-    && go get github.com/rubenv/sql-migrate/... \
+    && go get -u golang.org/x/tools/go/packages \
     && go get github.com/golang/mock/gomock \
     && go install github.com/golang/mock/mockgen \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
