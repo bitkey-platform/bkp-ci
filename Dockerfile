@@ -10,7 +10,7 @@ LABEL maintainer="Bitkey Inc." \
 
 ENV PROTOBUF_GIT_TAG="v1.2.0" \
     PROTOC_VERSION="3.2.0" \
-    GOLANGCI_LINT_VERSION="1.12.5"
+    GOLANGCI_LINT_VERSION="1.16.0"
 
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
