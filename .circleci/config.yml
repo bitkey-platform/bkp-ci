@@ -67,11 +67,11 @@ jobs:
       - run:
           name: Login and push container registries
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            echo $DOCKER_PASS | base64 -d | docker login -u $DOCKER_USER --password-stdin
             docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
             docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:latest
             curl -X POST https://hooks.microbadger.com/images/${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}/${MICROBADGER_WEBHOOK_TOKEN}
-            
+
 workflows:
   version: 2
   build-and-deploy:
@@ -79,7 +79,7 @@ workflows:
       - build_container:
           filters:
             tags:
-              only: /^v[0-9]+(\.[0-9]+)*(-.*)*/ 
+              only: /^v[0-9]+(\.[0-9]+)*(-.*)*/
       - push_container:
           context: container-registory
           requires:
