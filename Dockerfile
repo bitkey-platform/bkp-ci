@@ -9,8 +9,7 @@ LABEL maintainer="Bitkey Inc." \
       org.label-schema.vcs-ref=$VCS_REF
 
 ENV PROTOBUF_GIT_TAG="v1.2.0" \
-    PROTOC_VERSION="3.2.0" \
-    GOLANGCI_LINT_VERSION="1.16.0"
+    PROTOC_VERSION="3.7.1"
 
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
@@ -32,7 +31,6 @@ RUN go get github.com/golang/dep/cmd/dep \
     && sudo chown circleci /usr/local/bin/protoc\
     && sudo chown -R circleci /usr/local/include/google\
     && sudo apt-get -y install postgresql-client\
-    && rm -fr /tmp/* \
-    && sudo curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
+    && rm -fr /tmp/*
 
 CMD ["/bin/sh"]
