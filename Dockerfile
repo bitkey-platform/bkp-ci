@@ -9,7 +9,7 @@ LABEL maintainer="Bitkey Inc." \
       org.label-schema.vcs-ref=$VCS_REF
 
 ENV PROTOBUF_GIT_TAG="v1.2.0" \
-    PROTOC_VERSION="3.7.1"
+    PROTOC_VERSION="3.12.3"
 
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
