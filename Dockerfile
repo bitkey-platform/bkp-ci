@@ -19,7 +19,6 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/mwitkow/go-proto-validators \
     && go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
     && go get -u golang.org/x/tools/go/packages \
-    && go get github.com/golang/mock/gomock \
     && GO111MODULE=on go get -u github.com/golang/mock/mockgen@${MOCKGEN_VERSION} \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
     && git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $PROTOBUF_GIT_TAG \
