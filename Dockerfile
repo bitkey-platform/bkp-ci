@@ -9,7 +9,8 @@ LABEL maintainer="Bitkey Inc." \
       org.label-schema.vcs-ref=$VCS_REF
 
 ENV PROTOBUF_GIT_TAG="v1.2.0" \
-    PROTOC_VERSION="3.12.3"
+    PROTOC_VERSION="3.12.3" \
+    MOCKGEN_VERSION="v1.4.4"
 
 RUN go get github.com/golang/dep/cmd/dep \
     && go get google.golang.org/grpc \
@@ -18,8 +19,7 @@ RUN go get github.com/golang/dep/cmd/dep \
     && go get github.com/mwitkow/go-proto-validators \
     && go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
     && go get -u golang.org/x/tools/go/packages \
-    && go get github.com/golang/mock/gomock \
-    && go install github.com/golang/mock/mockgen \
+    && GO111MODULE=on go get -u github.com/golang/mock/mockgen@${MOCKGEN_VERSION} \
     && go get -d -u github.com/golang/protobuf/protoc-gen-go \
     && git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $PROTOBUF_GIT_TAG \
     && go install github.com/golang/protobuf/protoc-gen-go\
