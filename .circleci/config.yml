@@ -62,14 +62,10 @@ jobs:
             docker load -i ~/images/${CIRCLE_PROJECT_REPONAME}-${CIRCLE_TAG}.tar
             docker images
       - run:
-          name: Tagging Docker images to latest
-          command: docker tag ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG} ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:latest
-      - run:
           name: Login and push container registries
           command: |
             echo $DOCKER_PASS | base64 -d | docker login -u $DOCKER_USER --password-stdin
             docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
-            docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:latest
             curl -X POST https://hooks.microbadger.com/images/${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}/${MICROBADGER_WEBHOOK_TOKEN}
 
 workflows:
